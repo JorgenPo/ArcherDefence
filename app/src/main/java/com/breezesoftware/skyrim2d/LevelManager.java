@@ -18,6 +18,7 @@ import java.util.Random;
 public class LevelManager {
 
     private static final int SPEED_DISPERSION = 4;
+    private static final int HEALTH_DISPERSION = 2;
     private static final int LEVEL_COUNT = 6;
 
     private int currentLevel = 0;
@@ -75,8 +76,9 @@ public class LevelManager {
         int xOffset = MainActivity.screenSize.x + Math.abs(rand.nextInt() % 200);
         int yOffset = 100 + Math.abs(rand.nextInt()) % (MainActivity.screenSize.y - 300);
         int speed = Math.abs(rand.nextInt()) % SPEED_DISPERSION + 1;
+        int health = Math.abs(rand.nextInt(HEALTH_DISPERSION)) + 1;
 
-        Enemy enemy = new Enemy(this.context, xOffset, yOffset, "Monster", R.drawable.monster, speed, 1);
+        Enemy enemy = new Enemy(this.context, xOffset, yOffset, "Monster", R.drawable.monster, speed, health);
         enemy.setCostume(R.drawable.monster_dead, 1);
 
         return enemy;

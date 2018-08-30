@@ -14,21 +14,26 @@ import android.graphics.Rect;
  * Created by popof on 30.08.2018.
  */
 public class HealthBar {
-    private Actor actor;
-    private Rect rect;
+    private Enemy actor;
+    private Rect fullRect;
+    private Rect emptyRect;
 
     private Paint healthBarEmptyPaint;
     private Paint healthBarFullPaint;
 
-    HealthBar(Actor actor, int height) {
+    HealthBar(Enemy actor, int height) {
+        this.actor = actor;
+
         Bitmap currentBitmap = actor.getCurrentCostume();
         int h = currentBitmap.getHeight();
         int w = currentBitmap.getWidth();
 
-        rect = new Rect(actor.getX() - 5,
+        fullRect = new Rect(actor.getX() - 5,
                 actor.getY() + h + 5,
                 actor.getX() + w + 5,
                 actor.getY() + h + 5 + height);
+
+        emptyRect = new Rect(fullRect);
 
         healthBarEmptyPaint = new Paint();
         healthBarEmptyPaint.setColor(Color.RED);
@@ -39,9 +44,16 @@ public class HealthBar {
 
     public void draw(Canvas canvas) {
         // Translate health bar after move
-        rect.offsetTo(actor.getX() - 5, rect.top);
+        fullRect.offsetTo(actor.getX() - 5, fullRect.top);
+        emptyRect.offsetTo(actor.getX() - 5, emptyRect.top);
 
-        canvas.drawRect(rect, this.healthBarEmptyPaint);
-        canvas.drawRect(rect, this.healthBarFullPaint);
+        float healthPercent = this.actor.getHealth() / (float) this.actor.getMaxHealth();
+        int healthBarWidth = this.emptyRect.right - this.emptyRect.left;
+        healthBarWidth *= healthPercent;
+
+        fullRect.right = fullRect.left + healthBarWidth;
+
+        canvas.drawRect(emptyRect, this.healthBarEmptyPaint);
+        canvas.drawRect(fullRect, this.healthBarFullPaint);
     }
 }

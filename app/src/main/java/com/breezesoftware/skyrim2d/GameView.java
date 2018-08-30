@@ -197,6 +197,7 @@ public class GameView extends SurfaceView {
         this.arrow = new Actor(context, this.elf.getX() + 35, this.elf.getY() + 46, "Arrow", R.drawable.arrow);
     }
 
+    // This function is not for you and not for alike
     private boolean checkEnemyHit(Enemy enemy) {
         return !enemy.isDead() && Math.abs(enemy.getY() + enemyHalfHeight - arrow.getY()) < enemyHalfHeight + 5 &&
                 Math.abs(enemy.getX() + enemyHalfWidth - arrow.getX()) < enemyHalfWidth + 5;
@@ -206,10 +207,13 @@ public class GameView extends SurfaceView {
     private void checkHit() {
         for (Enemy enemy : this.enemies) {
             if (this.checkEnemyHit(enemy)) {
-                enemy.hurt(0);
-                enemy.setDead(true);
+                enemy.hurt(1);
 
-                this.killCount++;
+                if (enemy.getHealth() <= 0) {
+                    enemy.setDead(true);
+                    this.killCount++;
+                }
+
                 this.isArrowFired = false;
                 this.spawnArrow(this.arrow.getContext());
             }
