@@ -1,4 +1,4 @@
-package com.breezesoftware.skyrim2d;
+package com.breezesoftware.skyrim2d.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

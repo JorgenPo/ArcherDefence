@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.breezesoftware.skyrim2d.entity.Enemy;
+
 /**
  * This file is part of Test Kotlin Application
  * <p>
@@ -21,7 +23,7 @@ public class HealthBar {
     private Paint healthBarEmptyPaint;
     private Paint healthBarFullPaint;
 
-    HealthBar(Enemy actor, int height) {
+    public HealthBar(Enemy actor, int height) {
         this.actor = actor;
 
         Bitmap currentBitmap = actor.getCurrentCostume();

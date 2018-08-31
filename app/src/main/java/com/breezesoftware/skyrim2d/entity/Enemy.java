@@ -1,15 +1,11 @@
-package com.breezesoftware.skyrim2d;
+package com.breezesoftware.skyrim2d.entity;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.media.MediaPlayer;
-import android.os.Debug;
-import android.provider.MediaStore;
-import android.util.Log;
+
+import com.breezesoftware.skyrim2d.HealthBar;
+import com.breezesoftware.skyrim2d.util.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.Date;

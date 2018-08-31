@@ -1,11 +1,12 @@
-package com.breezesoftware.skyrim2d;
+package com.breezesoftware.skyrim2d.entity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+
+import com.breezesoftware.skyrim2d.util.BitmapUtil;
 
 /**
  * This file is part of Test Kotlin Application

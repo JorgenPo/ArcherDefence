@@ -2,7 +2,8 @@ package com.breezesoftware.skyrim2d;
 
 import android.content.Context;
 
-import java.lang.reflect.Array;
+import com.breezesoftware.skyrim2d.entity.Enemy;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

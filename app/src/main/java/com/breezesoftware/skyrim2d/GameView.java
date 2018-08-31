@@ -3,23 +3,19 @@ package com.breezesoftware.skyrim2d;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Date;
+import com.breezesoftware.skyrim2d.entity.Actor;
+import com.breezesoftware.skyrim2d.entity.Enemy;
+
 import java.util.List;
-import java.util.Random;
 
 /**
  * This file is part of Test Kotlin Application
@@ -41,8 +37,6 @@ public class GameView extends SurfaceView {
     public boolean isArrowFired = false;
     public boolean canFire = true;
     private boolean isGameOver = false;
-
-    private Random rand = new Random(new Date().getTime());
 
     private ConstraintLayout gameOverOverlay;
     private TextView levelLabel;
