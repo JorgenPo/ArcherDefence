@@ -2,6 +2,7 @@ package com.breezesoftware.skyrim2d;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.breezesoftware.skyrim2d.entity.Actor;
 import com.breezesoftware.skyrim2d.entity.Enemy;
+import com.breezesoftware.skyrim2d.entity.Player;
 
 import java.util.List;
 
@@ -25,17 +27,10 @@ import java.util.List;
  * Created by popof on 21.08.2018.
  */
 public class GameView extends SurfaceView {
-    public Actor elf;
-    public Actor arrow;
+    public Player elf;
+
     public List<Enemy> enemies;
-    private static final int ARROW_SPEED = 20;
-    private static final int ARROW_FIRE_DELAY = 400;
 
-    private int enemyHalfHeight;
-    private int enemyHalfWidth;
-
-    public boolean isArrowFired = false;
-    public boolean canFire = true;
     private boolean isGameOver = false;
 
     private ConstraintLayout gameOverOverlay;
@@ -48,8 +43,6 @@ public class GameView extends SurfaceView {
 
     private int canvasWidth = 0;
     private int canvasHeight = 0;
-
-    private Handler arrowHandler = new Handler();
 
     public void updateView() {
         if (this.levelLabel != null) {
@@ -80,10 +73,6 @@ public class GameView extends SurfaceView {
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        BitmapDrawable enemyBmp = (BitmapDrawable) context.getResources().getDrawable(R.drawable.monster);
-        this.enemyHalfWidth = enemyBmp.getBitmap().getWidth() / 2;
-        this.enemyHalfHeight = enemyBmp.getBitmap().getHeight() / 2;
-
         this.initSounds();
 
         levelManager = new LevelManager(context);
@@ -109,8 +98,6 @@ public class GameView extends SurfaceView {
     }
 
     public void resetGame() {
-        Log.d("GameView", "resetGame");
-        this.isArrowFired = false;
         this.isGameOver = false;
 
         if (this.gameOverOverlay != null) {
@@ -128,22 +115,7 @@ public class GameView extends SurfaceView {
             return;
         }
 
-        updateArrow();
         checkGameOver();
-    }
-
-    private void updateArrow() {
-        if (this.isArrowFired) {
-            arrow.goTo(arrow.getX() + ARROW_SPEED, arrow.getY());
-
-            // Spawn arrow on bow
-            if (arrow.getX() > canvasWidth) {
-                this.spawnArrow(this.arrow.getContext());
-                this.isArrowFired = false;
-            }
-
-            this.checkHit();
-        }
     }
 
     private void checkGameOver() {
@@ -178,40 +150,7 @@ public class GameView extends SurfaceView {
     }
 
     public void spawnPlayer() {
-        this.elf = new Actor(getContext(), 150, 150, "Player", R.drawable.archer);
-        this.spawnArrow(getContext());
-    }
-
-    public void spawnArrow(Context context) {
-        if (this.arrow != null) {
-            this.arrow.goTo(this.elf.getX() + 35, this.elf.getY() + 46);
-            return;
-        }
-
-        this.arrow = new Actor(context, this.elf.getX() + 35, this.elf.getY() + 46, "Arrow", R.drawable.arrow);
-    }
-
-    // This function is not for you and not for alike
-    private boolean checkEnemyHit(Enemy enemy) {
-        return !enemy.isDead() && Math.abs(enemy.getY() + enemyHalfHeight - arrow.getY()) < enemyHalfHeight + 5 &&
-                Math.abs(enemy.getX() + enemyHalfWidth - arrow.getX()) < enemyHalfWidth + 5;
-
-    }
-
-    private void checkHit() {
-        for (Enemy enemy : this.enemies) {
-            if (this.checkEnemyHit(enemy)) {
-                enemy.hurt(1);
-
-                if (enemy.getHealth() <= 0) {
-                    enemy.setDead(true);
-                    this.killCount++;
-                }
-
-                this.isArrowFired = false;
-                this.spawnArrow(this.arrow.getContext());
-            }
-        }
+        this.elf = new Player(getContext(), new Point(150, 150));
     }
 
     @Override
@@ -231,22 +170,13 @@ public class GameView extends SurfaceView {
         this.updateEnemies(canvas);
 
         this.elf.draw(canvas);
-        this.arrow.draw(canvas);
     }
 
-    public void fireArrow() {
-        if (!canFire) {
-            return;
-        }
+    public Player getPlayer() {
+        return elf;
+    }
 
-        canFire = false;
-        arrowHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                canFire = true;
-            }
-        }, ARROW_FIRE_DELAY);
+    public void fireArrow(Point destination) {
 
-        isArrowFired = true;
     }
 }

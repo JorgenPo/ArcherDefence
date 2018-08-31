@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         fireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameView.fireArrow();
+                gameView.getPlayer().fire(new Point(300, 150));
             }
         });
 
@@ -206,10 +206,6 @@ public class MainActivity extends AppCompatActivity {
         int speed = down ? PLAYER_SPEED : -PLAYER_SPEED;
 
         gameView.elf.goTo(gameView.elf.getX(), gameView.elf.getY() + speed);
-
-        if (!gameView.isArrowFired) {
-            gameView.arrow.goTo(gameView.arrow.getX(), gameView.arrow.getY() + speed);
-        }
     }
 
 }
