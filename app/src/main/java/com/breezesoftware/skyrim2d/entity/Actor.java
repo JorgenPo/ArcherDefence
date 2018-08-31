@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 
+import com.breezesoftware.skyrim2d.Composite;
 import com.breezesoftware.skyrim2d.util.BitmapUtil;
 
 /**
@@ -15,7 +17,7 @@ import com.breezesoftware.skyrim2d.util.BitmapUtil;
  * <p>
  * Created by popof on 21.08.2018.
  */
-public class Actor {
+public class Actor extends Composite<Actor> {
     private static float ACTOR_SCALE = 0.8f;
 
     private Context context;
@@ -38,13 +40,15 @@ public class Actor {
         this.costume = outfit;
         this.currentCostume = 0;
 
-        BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);
-        graphic[0] = BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE);
-        graphic[0] = Bitmap.createScaledBitmap(
-                graphic[0],
-                (int) (graphic[0].getWidth() * ACTOR_SCALE),
-                (int) (graphic[0].getHeight() * ACTOR_SCALE),
-                false);
+        if (outfit != 0) {
+            BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);
+            graphic[0] = BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE);
+            graphic[0] = Bitmap.createScaledBitmap(
+                    graphic[0],
+                    (int) (graphic[0].getWidth() * ACTOR_SCALE),
+                    (int) (graphic[0].getHeight() * ACTOR_SCALE),
+                    false);
+        }
     }
 
     public void goTo(int posX, int posY) {
@@ -60,7 +64,6 @@ public class Actor {
                 (int) (graphic[index].getWidth() * ACTOR_SCALE),
                 (int) (graphic[index].getHeight() * ACTOR_SCALE),
                 false);
-                //graphic[index].eraseColor(Color.WHITE);
     }
 
     public void setCurrentCostume(int index) {
@@ -101,11 +104,28 @@ public class Actor {
         return context;
     }
 
+    public void update() {
+        for (Actor actor : this.getChildren()) {
+            actor.update();
+        }
+    }
+
     public void draw(Canvas canvas) {
         canvas.drawBitmap(this.getBitmap(), this.getX(), this.getY(), null);
+
+        // Translate canvas to make origin on parent Actor position
+        canvas.translate(this.x, this.y);
+        for (Actor actor : this.getChildren()) {
+            actor.draw(canvas);
+        }
+        canvas.translate(-this.x, -this.y);
     }
 
     public Bitmap getCurrentCostume() {
         return this.graphic[this.currentCostume];
+    }
+
+    public Point getPosition() {
+        return new Point(this.x, this.y);
     }
 }

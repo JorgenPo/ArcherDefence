@@ -30,8 +30,6 @@ public class Enemy extends Actor {
     private static List<MediaPlayer> diedSounds = new ArrayList<>();
     private static List<MediaPlayer> hurtSounds = new ArrayList<>();
 
-    private HealthBar healthBar;
-
     public Enemy(Context context, int xPos, int yPos, String name, int outfit, int speed, int maxHealth) {
         super(context, xPos, yPos, name, outfit);
 
@@ -39,7 +37,8 @@ public class Enemy extends Actor {
         this.maxHealth = maxHealth;
         this.health = maxHealth;
 
-        this.healthBar = new HealthBar(this, 10);
+        HealthBar healthBar = new HealthBar(context, this, 10);
+        this.addChild(healthBar);
     }
 
     public boolean isDead() {
@@ -88,9 +87,13 @@ public class Enemy extends Actor {
     }
 
     @Override
+    public void update() {
+        super.update();
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        healthBar.draw(canvas);
     }
 
     public int getMaxHealth() {
