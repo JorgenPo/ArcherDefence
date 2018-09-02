@@ -16,6 +16,7 @@ import com.breezesoftware.skyrim2d.entity.Arrow;
 import com.breezesoftware.skyrim2d.entity.Enemy;
 import com.breezesoftware.skyrim2d.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -134,24 +135,31 @@ public class GameView extends SurfaceView {
     }
 
     private void checkEnemyHit(Enemy enemy) {
+        List<Arrow> toDelete = new ArrayList<>(player.getArrows().size());
+
         for (int i = 0; i < player.getArrows().size(); i++) {
             Arrow arrow = player.getArrows().get(i);
 
             if (enemy.intersectsWith(arrow)) {
                 enemy.hurt(arrow.getDamage());
-                player.removeArrow(arrow);
+                toDelete.add(arrow);
                 if (enemy.isDead()) {
                     killCount++;
                 }
             }
         }
+
+        for (Arrow arrow : toDelete) {
+            player.removeArrow(arrow);
+        }
     }
 
     public void updateEnemies(Canvas canvas) {
         for (Enemy enemy : this.enemies) {
+
             checkEnemyHit(enemy);
 
-            enemy.move();
+            enemy.update();
 
             if (enemy.getX() < player.getX()) {
                 this.gameOver();

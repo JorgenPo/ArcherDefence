@@ -78,7 +78,7 @@ public class Enemy extends Actor {
         this.speed = speed;
     }
 
-    public void move() {
+    private void move() {
         if (!this.isDead) {
             this.goTo(this.getX() - this.speed, this.getY());
         }
@@ -94,6 +94,8 @@ public class Enemy extends Actor {
 
     @Override
     public void update() {
+        move();
+
         super.update();
     }
 
