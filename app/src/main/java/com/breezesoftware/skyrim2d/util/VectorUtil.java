@@ -1,6 +1,9 @@
 package com.breezesoftware.skyrim2d.util;
 
 import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * This file is part of Test Kotlin Application
@@ -10,33 +13,39 @@ import android.graphics.Point;
  * Created by popof on 31.08.2018.
  */
 public class VectorUtil {
-    public static int getDistanceBetween(Point p1, Point p2) {
-        int x1 = p1.x;
-        int y1 = p1.y;
-        int x2 = p2.x;
-        int y2 = p2.y;
+    public static float getDistanceBetween(PointF p1, PointF p2) {
+        float x1 = p1.x;
+        float y1 = p1.y;
+        float x2 = p2.x;
+        float y2 = p2.y;
 
-        return (int) Math.sqrt(Math.pow(x2 - x1, 2) - Math.pow(y2 - y1, 2));
+        return (float) Math.sqrt(Math.pow(x2 - x1, 2) - Math.pow(y2 - y1, 2));
     }
 
-    public static Point getVectorBetween(Point source, Point dest) {
-        return new Point(dest.x - source.x, dest.y - source.y);
+    public static PointF getVectorBetween(PointF source, PointF dest) {
+        return new PointF(dest.x - source.x, dest.y - source.y);
     }
 
-    public static int getVectorLength(Point vector) {
-        return (int) Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y, 2));
+    public static float getVectorLength(PointF vector) {
+        return (float) Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y, 2));
     }
 
-    public static Point normalize(Point vector) {
-        int length = getVectorLength(vector);
-        return new Point(vector.x / length, vector.y / length);
+    public static PointF normalize(PointF vector) {
+        float length = getVectorLength(vector);
+        return new PointF(vector.x / length, vector.y / length);
     }
 
-    public static Point multiplyVector(Point vector, int multiplier) {
-        return new Point(vector.x * multiplier, vector.y * multiplier);
+    public static PointF multiplyVector(PointF vector, int multiplier) {
+        return new PointF(vector.x * multiplier, vector.y * multiplier);
     }
 
-    public static Point translateByVector(Point position, Point vector) {
-        return new Point(position.x + vector.x, position.y + vector.y);
+    public static PointF translateByVector(PointF position, PointF vector) {
+        return new PointF(position.x + vector.x, position.y + vector.y);
     }
+
+    public static boolean isPointInRect(PointF point, Rect rect) {
+        return point.x >= rect.left && point.x <= rect.right &&
+                point.y >= rect.top && point.y <= rect.bottom;
+    }
+
 }

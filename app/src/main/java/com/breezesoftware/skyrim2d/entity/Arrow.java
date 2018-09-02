@@ -3,6 +3,7 @@ package com.breezesoftware.skyrim2d.entity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.PointF;
 
 import com.breezesoftware.skyrim2d.R;
 import com.breezesoftware.skyrim2d.util.VectorUtil;
@@ -17,17 +18,17 @@ import com.breezesoftware.skyrim2d.util.VectorUtil;
 public class Arrow extends Actor {
     private static final int ARROW_DRAWABLE = R.drawable.arrow;
 
-    private Point destination;
-    private Point vector;
+    private PointF destination;
+    private PointF vector;
 
     private Context context;
 
-    private int speed = 1;
+    private int speed = 20;
     private int damage = 1;
 
     private boolean isStatic = false;
 
-    Arrow(Context context, Point firePoint, Point destination) {
+    Arrow(Context context, PointF firePoint, PointF destination) {
         super(context, firePoint.x, firePoint.y, "Arrow", ARROW_DRAWABLE);
 
         this.context = context;
@@ -47,7 +48,7 @@ public class Arrow extends Actor {
             return;
         }
 
-        Point currentPos = this.getPosition();
+        PointF currentPos = this.getPosition();
         currentPos = VectorUtil.translateByVector(currentPos,
                 VectorUtil.multiplyVector(vector, speed));
 

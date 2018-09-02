@@ -3,8 +3,6 @@ package com.breezesoftware.skyrim2d;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
@@ -13,7 +11,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.breezesoftware.skyrim2d.entity.Actor;
+import com.breezesoftware.skyrim2d.entity.Arrow;
 import com.breezesoftware.skyrim2d.entity.Enemy;
 import com.breezesoftware.skyrim2d.entity.Player;
 
@@ -27,7 +25,7 @@ import java.util.List;
  * Created by popof on 21.08.2018.
  */
 public class GameView extends SurfaceView {
-    public Player elf;
+    public Player player;
 
     public List<Enemy> enemies;
 
@@ -110,12 +108,14 @@ public class GameView extends SurfaceView {
     }
 
     public void update() {
-        Log.d("GameView", "update");
+        //Log.d("GameView", "update");
         if (isGameOver) {
             return;
         }
 
         checkGameOver();
+
+        this.player.update();
     }
 
     private void checkGameOver() {
@@ -130,11 +130,27 @@ public class GameView extends SurfaceView {
         }
     }
 
+    private void checkEnemyHit(Enemy enemy) {
+        for (int i = 0; i < player.getArrows().size(); i++) {
+            Arrow arrow = player.getArrows().get(i);
+
+            if (enemy.intersectsWith(arrow)) {
+                enemy.hurt(arrow.getDamage());
+                player.removeArrow(arrow);
+                if (enemy.isDead()) {
+                    killCount++;
+                }
+            }
+        }
+    }
+
     public void updateEnemies(Canvas canvas) {
         for (Enemy enemy : this.enemies) {
+            checkEnemyHit(enemy);
+
             enemy.move();
 
-            if (enemy.getX() < elf.getX()) {
+            if (enemy.getX() < player.getX()) {
                 this.gameOver();
             }
 
@@ -150,12 +166,12 @@ public class GameView extends SurfaceView {
     }
 
     public void spawnPlayer() {
-        this.elf = new Player(getContext(), new Point(150, 150));
+        this.player = new Player(getContext(), new Point(150, 150));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.d("GameView", "onDraw");
+        //Log.d("GameView", "onDraw");
 
         updateView();
 
@@ -169,11 +185,11 @@ public class GameView extends SurfaceView {
 
         this.updateEnemies(canvas);
 
-        this.elf.draw(canvas);
+        this.player.draw(canvas);
     }
 
     public Player getPlayer() {
-        return elf;
+        return player;
     }
 
     public void fireArrow(Point destination) {

@@ -5,10 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 
 import com.breezesoftware.skyrim2d.Composite;
 import com.breezesoftware.skyrim2d.util.BitmapUtil;
+import com.breezesoftware.skyrim2d.util.VectorUtil;
 
 /**
  * This file is part of Test Kotlin Application
@@ -22,8 +25,8 @@ public class Actor extends Composite<Actor> {
 
     private Context context;
 
-    private int x;
-    private int y;
+    private float x;
+    private float y;
 
     private String name;
 
@@ -32,7 +35,7 @@ public class Actor extends Composite<Actor> {
 
     private Bitmap[] graphic = new Bitmap[10];
 
-    public Actor(Context context, int xPos, int yPos, String name, int outfit) {
+    public Actor(Context context, float xPos, float yPos, String name, int outfit) {
         this.x = xPos;
         this.y = yPos;
         this.context = context;
@@ -51,7 +54,7 @@ public class Actor extends Composite<Actor> {
         }
     }
 
-    public void goTo(int posX, int posY) {
+    public void goTo(float posX, float posY) {
         this.x = posX;
         this.y = posY;
     }
@@ -70,11 +73,11 @@ public class Actor extends Composite<Actor> {
         currentCostume = index;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
@@ -125,7 +128,19 @@ public class Actor extends Composite<Actor> {
         return this.graphic[this.currentCostume];
     }
 
-    public Point getPosition() {
-        return new Point(this.x, this.y);
+    public PointF getPosition() {
+        return new PointF(this.x, this.y);
+    }
+
+    public RectF getBoundingRect() {
+        Bitmap bitmap = this.getBitmap();
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+
+        return new RectF(this.x, this.y, this.x + w, this.y + h);
+    }
+
+    public boolean intersectsWith(Actor another) {
+        return getBoundingRect().intersect(another.getBoundingRect());
     }
 }

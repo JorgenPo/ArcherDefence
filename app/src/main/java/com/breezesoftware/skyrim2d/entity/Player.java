@@ -2,9 +2,19 @@ package com.breezesoftware.skyrim2d.entity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.util.Log;
 
+import com.breezesoftware.skyrim2d.MainActivity;
 import com.breezesoftware.skyrim2d.R;
+import com.breezesoftware.skyrim2d.util.VectorUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * This file is part of Test Kotlin Application
@@ -16,6 +26,8 @@ import com.breezesoftware.skyrim2d.R;
 public class Player extends Actor {
     private static final int PLAYER_DRAWABLE = R.drawable.archer;
 
+    private List<Arrow> arrows = new Vector<>(10);
+
     public Player(Context context, Point position) {
         super(context, position.x, position.y, "Player", PLAYER_DRAWABLE);
 
@@ -23,7 +35,7 @@ public class Player extends Actor {
         int w = playerDrawable.getWidth();
         int h = playerDrawable.getHeight();
 
-        Point arrowOffset = new Point(w / 2, (int) (h / 2.75f));
+        PointF arrowOffset = new PointF(w / 2, h / 2.75f);
 
         // Create an arrow on bow
         Arrow arrow = new Arrow(context, arrowOffset , this.getPosition());
@@ -33,12 +45,49 @@ public class Player extends Actor {
         this.addChild(arrow);
     }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+
+        for (int i = 0; i < arrows.size(); i++) {
+            arrows.get(i).draw(canvas);
+        }
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        for (int i = 0; i < arrows.size(); i++) {
+            Arrow arrow = arrows.get(i);
+
+            arrow.update();
+
+            // Remove arrows that are outside of screen
+            if (!VectorUtil.isPointInRect(arrow.getPosition(), new Rect(
+                    0, 0, MainActivity.SCREEN_SIZE.x, MainActivity.SCREEN_SIZE.y)))
+            {
+                Log.d("Player", "Arrow deleted");
+                arrows.remove(i);
+            }
+        }
+    }
+
     /**
      * Fire an arrow to the destination point
      *
      * @param destination Arrow destination point
      */
-    public void fire(Point destination) {
+    public void fire(PointF destination) {
+        Arrow arrow = new Arrow(getContext(), getPosition(), destination);
+        arrows.add(arrow);
+    }
 
+    public List<Arrow> getArrows() {
+        return arrows;
+    }
+
+    public void removeArrow(Arrow arrow) {
+        arrows.remove(arrow);
     }
 }

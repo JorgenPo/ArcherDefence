@@ -54,6 +54,12 @@ public class Enemy extends Actor {
     public void hurt(int damage) {
         this.health -= damage;
         this.playHurtSound();
+
+        if (this.health <= 0) {
+            this.setDead(true);
+        }
+
+
     }
 
     private void playDiedSound() {
@@ -104,4 +110,8 @@ public class Enemy extends Actor {
         return health;
     }
 
+    @Override
+    public boolean intersectsWith(Actor another) {
+        return !this.isDead && super.intersectsWith(another);
+    }
 }
