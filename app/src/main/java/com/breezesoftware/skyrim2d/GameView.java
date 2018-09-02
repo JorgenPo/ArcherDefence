@@ -3,6 +3,7 @@ package com.breezesoftware.skyrim2d;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
@@ -25,6 +26,8 @@ import java.util.List;
  * Created by popof on 21.08.2018.
  */
 public class GameView extends SurfaceView {
+    private static final int PLAYER_X_OFFSET = 50;
+
     public Player player;
 
     public List<Enemy> enemies;
@@ -166,7 +169,11 @@ public class GameView extends SurfaceView {
     }
 
     public void spawnPlayer() {
-        this.player = new Player(getContext(), new Point(150, 150));
+        Drawable playerDrawable = getResources().getDrawable(R.drawable.archer);
+
+        // Player aligned vertically
+        this.player = new Player(getContext(), new Point(PLAYER_X_OFFSET,
+                MainActivity.SCREEN_SIZE.y / 2 - playerDrawable.getIntrinsicHeight() / 2));
     }
 
     @Override
