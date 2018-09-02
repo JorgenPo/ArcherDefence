@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
@@ -38,6 +37,7 @@ public class GameView extends SurfaceView {
     private ConstraintLayout gameOverOverlay;
     private TextView levelLabel;
     private TextView monstersLabel;
+    private TextView goldLabel;
 
     private int killCount;
 
@@ -46,13 +46,17 @@ public class GameView extends SurfaceView {
     private int canvasWidth = 0;
     private int canvasHeight = 0;
 
-    public void updateView() {
+    public void updateUI() {
         if (this.levelLabel != null) {
             this.levelLabel.setText(String.format("Level %d", levelManager.getCurrentLevel()));
         }
 
         if (this.monstersLabel != null) {
             this.monstersLabel.setText(String.format("Monsters: %d", levelManager.getCurrentLevelMonsterCount()));
+        }
+
+        if (this.goldLabel != null) {
+            this.goldLabel.setText(String.format("%d", player.getGold()));
         }
     }
 
@@ -70,6 +74,10 @@ public class GameView extends SurfaceView {
 
     public void setGameOverOverlay(ConstraintLayout gameOverOverlay) {
         this.gameOverOverlay = gameOverOverlay;
+    }
+
+    public void setGoldLabel(TextView goldLabel) {
+        this.goldLabel = goldLabel;
     }
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
@@ -143,8 +151,10 @@ public class GameView extends SurfaceView {
             if (enemy.intersectsWith(arrow)) {
                 enemy.hurt(arrow.getDamage());
                 toDelete.add(arrow);
+
                 if (enemy.isDead()) {
                     killCount++;
+                    player.addGold(enemy.getGold());
                 }
             }
         }
@@ -188,7 +198,7 @@ public class GameView extends SurfaceView {
     protected void onDraw(Canvas canvas) {
         //Log.d("GameView", "onDraw");
 
-        updateView();
+        updateUI();
 
         if (canvasWidth == 0) {
             canvasWidth = canvas.getWidth();

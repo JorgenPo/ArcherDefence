@@ -78,8 +78,10 @@ public class LevelManager {
         int yOffset = 100 + Math.abs(rand.nextInt()) % (MainActivity.SCREEN_SIZE.y - 300);
         int speed = Math.abs(rand.nextInt()) % SPEED_DISPERSION + 1;
         int health = Math.abs(rand.nextInt(HEALTH_DISPERSION)) + 1;
+        int gold = 1;
 
         Enemy enemy = new Enemy(this.context, xOffset, yOffset, "Monster", R.drawable.monster, speed, health);
+        enemy.setGold(gold);
         enemy.setCostume(R.drawable.monster_dead, 1);
 
         return enemy;

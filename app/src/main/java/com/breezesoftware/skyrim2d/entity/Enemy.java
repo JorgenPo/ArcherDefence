@@ -23,6 +23,7 @@ public class Enemy extends Actor {
     private int speed;
     private int maxHealth;
     private int health;
+    private int gold;
     private boolean isDead;
 
     private Random rand = new Random(new Date().getTime());
@@ -115,5 +116,13 @@ public class Enemy extends Actor {
     @Override
     public boolean intersectsWith(Actor another) {
         return !this.isDead && super.intersectsWith(another);
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 }

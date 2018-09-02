@@ -117,8 +117,9 @@ public class MainActivity extends AppCompatActivity {
         SCREEN_SIZE = new Point();
         display.getSize(SCREEN_SIZE);
 
-        gameView.setLevelLabel((TextView) findViewById(R.id.levelLabel));
-        gameView.setMonstersLabel((TextView) findViewById(R.id.monstersLabel));
+        gameView.setLevelLabel(findViewById(R.id.levelLabel));
+        gameView.setMonstersLabel(findViewById(R.id.monstersLabel));
+        gameView.setGoldLabel(findViewById(R.id.goldLabel));
 
         // Resets all game state
         startNewGame();
