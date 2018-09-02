@@ -13,6 +13,7 @@ import com.breezesoftware.skyrim2d.R;
 import com.breezesoftware.skyrim2d.util.VectorUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -27,6 +28,8 @@ public class Player extends Actor {
     private static final int PLAYER_DRAWABLE = R.drawable.archer;
 
     private List<Arrow> arrows = new Vector<>(10);
+
+    private Date lastFireTime;
 
     public Player(Context context, Point position) {
         super(context, position.x, position.y, "Player", PLAYER_DRAWABLE);
@@ -43,6 +46,8 @@ public class Player extends Actor {
         arrow.setStatic(true);
 
         this.addChild(arrow);
+
+        this.lastFireTime = new Date();
     }
 
     @Override
@@ -79,8 +84,16 @@ public class Player extends Actor {
      * @param destination Arrow destination point
      */
     public void fire(PointF destination) {
+        Date now = new Date();
+
+        if (now.getTime() - lastFireTime.getTime() < getFireDelay()) {
+            return;
+        }
+
         Arrow arrow = new Arrow(getContext(), getPosition(), destination);
         arrows.add(arrow);
+
+        this.lastFireTime = now;
     }
 
     public List<Arrow> getArrows() {
@@ -89,5 +102,22 @@ public class Player extends Actor {
 
     public void removeArrow(Arrow arrow) {
         arrows.remove(arrow);
+    }
+
+    /**
+     * Returns the player fire speed
+     *
+     * @return Number of arrow player can fire every second
+     */
+    private float getFireSpeed() {
+        return 0.5f;
+    }
+
+    /**
+     * Returns the player fire delay in milliseconds
+     * @return Fire delay
+     */
+    private float getFireDelay() {
+        return 1000.0f / getFireSpeed();
     }
 }
