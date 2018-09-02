@@ -5,7 +5,7 @@ You have an archer. You can shoot by tap on screen. There are enemies that want 
 # Version
 The game is curently actively developing. It is on pre-pre... alpha now. But there will be some alpha releases soon.
 
-# Game Screenshoots 
+# Game Screenshots 
 <img width="640" height="400" src="https://github.com/JorgenPo/ArcherDefence/blob/master/docs/images/main_screen_alpha_0.0.1.jpg" alt="Game Screen" />
 
 # Contribution
