@@ -1,6 +1,8 @@
 package com.breezesoftware.skyrim2d;
 
 import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.Rect;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isMovingDown = false;
     private boolean isMovingUp = false;
 
-    public static Point screenSize;
+    public static Point SCREEN_SIZE;
 
     class GameThread extends Thread {
         private boolean isRunning = false;
@@ -131,6 +133,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gameView.getPlayer().fire(new PointF(event.getX(), event.getY()));
+        return super.onTouchEvent(event);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -170,13 +178,13 @@ public class MainActivity extends AppCompatActivity {
         fireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameView.getPlayer().fire(new Point(300, 150));
+                gameView.getPlayer().fire(new PointF(300.0f, 150.0f));
             }
         });
 
         Display display = getWindowManager().getDefaultDisplay();
-        screenSize = new Point();
-        display.getSize(screenSize);
+        SCREEN_SIZE = new Point();
+        display.getSize(SCREEN_SIZE);
 
         gameView.setLevelLabel((TextView) findViewById(R.id.levelLabel));
         gameView.setMonstersLabel((TextView) findViewById(R.id.monstersLabel));
@@ -205,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
     private void movePlayer(boolean down) {
         int speed = down ? PLAYER_SPEED : -PLAYER_SPEED;
 
-        gameView.elf.goTo(gameView.elf.getX(), gameView.elf.getY() + speed);
+        gameView.player.goTo(gameView.player.getX(), gameView.player.getY() + speed);
     }
 
 }

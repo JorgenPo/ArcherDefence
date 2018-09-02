@@ -74,8 +74,8 @@ public class LevelManager {
     private Enemy spawnEnemy(int seed) {
         Random rand = new Random(seed);
 
-        int xOffset = MainActivity.screenSize.x + Math.abs(rand.nextInt() % 200);
-        int yOffset = 100 + Math.abs(rand.nextInt()) % (MainActivity.screenSize.y - 300);
+        int xOffset = MainActivity.SCREEN_SIZE.x + Math.abs(rand.nextInt() % 200);
+        int yOffset = 100 + Math.abs(rand.nextInt()) % (MainActivity.SCREEN_SIZE.y - 300);
         int speed = Math.abs(rand.nextInt()) % SPEED_DISPERSION + 1;
         int health = Math.abs(rand.nextInt(HEALTH_DISPERSION)) + 1;
 
