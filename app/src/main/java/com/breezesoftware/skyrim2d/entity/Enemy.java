@@ -38,7 +38,7 @@ public class Enemy extends Actor {
         this.maxHealth = maxHealth;
         this.health = maxHealth;
 
-        HealthBar healthBar = new HealthBar(context, this, 10);
+        HealthBar healthBar = new HealthBar(context, this, 5);
         this.addChild(healthBar);
     }
 
