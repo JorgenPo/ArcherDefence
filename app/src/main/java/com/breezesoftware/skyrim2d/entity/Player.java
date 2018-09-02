@@ -15,6 +15,7 @@ import com.breezesoftware.skyrim2d.util.VectorUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -30,6 +31,20 @@ public class Player extends Actor {
     private List<Arrow> arrows = new Vector<>(10);
 
     private Date lastFireTime;
+
+    private int level = 1;
+    private int gold = 0;
+
+    // Player stats
+    private int strength        = 1;
+    private int agility         = 1;
+    private int dexterity       = 1;
+    private int luck            = 1;
+    private int intelligence    = 1;
+
+    private float weaponDamage = 1.0f;
+
+    private Random rand = new Random(new Date().getTime());
 
     public Player(Context context, Point position) {
         super(context, position.x, position.y, "Player", PLAYER_DRAWABLE);
@@ -91,7 +106,10 @@ public class Player extends Actor {
         }
 
         Arrow arrow = new Arrow(getContext(), getPosition(), destination);
+        arrow.setDamage(Math.round(generateDamage()));
         arrows.add(arrow);
+
+        Log.d("PlayerArcher", "Generated arrow with damage " + arrow.getDamage());
 
         this.lastFireTime = now;
     }
@@ -110,7 +128,40 @@ public class Player extends Actor {
      * @return Number of arrow player can fire every second
      */
     private float getFireSpeed() {
-        return 0.5f;
+        return 0.5f * agility * 2.0f + strength * 1.5f;
+    }
+
+    /**
+     * Returns player damage dispersion. Dispersion based on player strength and dexterity
+     *
+     * @return Damage dispersion
+     */
+    private float getDamageDispersion() {
+        return Math.max(0, getDamage() / 2.0f - (dexterity * 0.02f) * getDamage() / 2.0f);
+    }
+
+    /**
+     * Returns a damage of a player.
+     *
+     * @return Damage of a player.
+     */
+    private float getDamage() {
+        return weaponDamage + strength * 0.5f;
+    }
+
+    /**
+     * Generates random number using damage and damage dispersion
+     *
+     * @return Some random damage number
+     */
+    private float generateDamage() {
+        float from = -getDamageDispersion();
+        float to = -from;
+
+        Log.d("PlayerArcher", "Dispersion: " + getDamageDispersion());
+        float dispersion = from + (rand.nextFloat() % Math.abs(to - from));
+
+        return getDamage() + dispersion;
     }
 
     /**
@@ -119,5 +170,45 @@ public class Player extends Actor {
      */
     private float getFireDelay() {
         return 1000.0f / getFireSpeed();
+    }
+
+    public Date getLastFireTime() {
+        return lastFireTime;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getAgility() {
+        return agility;
+    }
+
+    public int getDexterity() {
+        return dexterity;
+    }
+
+    public int getLuck() {
+        return luck;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public void addGold(int gold) {
+        this.gold += gold;
+    }
+
+    public void removeGold(int gold) {
+        this.gold = Math.max(0, this.gold - gold);
     }
 }
