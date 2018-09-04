@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
         gameView.setMonstersLabel(findViewById(R.id.monstersLabel));
         gameView.setGoldLabel(findViewById(R.id.goldLabel));
 
+        gameView.initLevelManager();
+
         // Resets all game state
         startNewGame();
 

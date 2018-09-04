@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LevelPack>
+    <Level>
+        <Monster name="orc" value="1">
+        </Monster>
+    </Level>
+    <Level>
+        <Monster name="orc" value="5">
+        </Monster>
+    </Level>
+    <Level>
+        <Monster name="orc" value="10">
+        </Monster>
+    </Level>
+</LevelPack>

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.breezesoftware.skyrim2d.entity.Arrow;
 import com.breezesoftware.skyrim2d.entity.Enemy;
 import com.breezesoftware.skyrim2d.entity.Player;
+import com.breezesoftware.skyrim2d.level.LevelManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,10 @@ public class GameView extends SurfaceView {
         super(context, attrs);
 
         this.initSounds();
+    }
 
-        levelManager = new LevelManager(context);
+    public void initLevelManager() {
+        levelManager = new LevelManager(getContext());
     }
 
     public void initSounds() {
@@ -98,7 +101,7 @@ public class GameView extends SurfaceView {
     }
 
     public void startGame() {
-        this.levelManager.setLevel(0);
+        this.levelManager.setCurrentLevel(0);
         this.spawnPlayer();
         resetGame();
     }
