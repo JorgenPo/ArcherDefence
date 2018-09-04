@@ -60,7 +60,11 @@ public class Enemy extends Actor {
             this.setDead(true);
         }
 
+        this.addDamageText(damage);
+    }
 
+    private void addDamageText(int damage) {
+        this.addChild(new DamageText(context, 0, 0, Integer.toString(damage)));
     }
 
     private void playDiedSound() {
