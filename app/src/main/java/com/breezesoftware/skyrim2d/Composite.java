@@ -11,6 +11,8 @@ import java.util.List;
  * Created by popof on 31.08.2018.
  */
 public class Composite<T> {
+    private boolean canDelete = false;
+
     private List<T> children = new ArrayList<>();
 
     public void addChild(T child) {
@@ -19,5 +21,17 @@ public class Composite<T> {
 
     public List<T> getChildren() {
         return children;
+    }
+
+    public void postForDelete() {
+        this.canDelete = true;
+    }
+
+    public boolean isCanDelete() {
+        return canDelete;
+    }
+
+    public void removeChild(T child) {
+        children.remove(child);
     }
 }

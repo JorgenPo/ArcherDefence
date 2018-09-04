@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 import com.breezesoftware.skyrim2d.Composite;
 import com.breezesoftware.skyrim2d.util.BitmapUtil;
@@ -23,17 +24,17 @@ import com.breezesoftware.skyrim2d.util.VectorUtil;
 public class Actor extends Composite<Actor> {
     private static float ACTOR_SCALE = 0.8f;
 
-    private Context context;
+    protected Context context;
 
-    private float x;
-    private float y;
+    protected float x;
+    protected float y;
 
-    private String name;
+    protected String name;
 
-    private int costume;
+    protected int costume;
     protected int currentCostume;
 
-    private Bitmap[] graphic = new Bitmap[10];
+    protected Bitmap[] graphic = new Bitmap[10];
 
     public Actor(Context context, float xPos, float yPos, String name, int outfit) {
         this.x = xPos;
@@ -108,8 +109,14 @@ public class Actor extends Composite<Actor> {
     }
 
     public void update() {
-        for (Actor actor : this.getChildren()) {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+            Actor actor = this.getChildren().get(i);
             actor.update();
+
+            if (actor.isCanDelete()) {
+                Log.d("SActor", "Removed child " + actor.getName());
+                this.removeChild(actor);
+            }
         }
     }
 
