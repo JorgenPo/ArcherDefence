@@ -31,8 +31,8 @@ public class Text extends Actor {
 
     public static Paint getDefaultPaint() {
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(14.0f);
+        paint.setColor(Color.RED);
+        paint.setTextSize(30.0f);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
         return paint;
     }

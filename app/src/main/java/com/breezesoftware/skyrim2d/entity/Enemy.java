@@ -66,7 +66,10 @@ public class Enemy extends Actor {
     }
 
     private void addDamageText(int damage) {
-        this.addChild(new DamageText(context, 0, 0, Integer.toString(damage)));
+        float xOffset = this.getBitmap().getWidth() / 2 -
+                DamageText.getDefaultPaint().getTextSize() / 2;
+
+        this.addChild(new DamageText(context, (int) xOffset, 0, Integer.toString(damage)));
     }
 
     private void playDiedSound() {
