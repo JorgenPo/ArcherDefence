@@ -94,7 +94,7 @@ public class GameView extends SurfaceView {
     public void initSounds() {
         // BAD API HACK
         // TODO: Rework this with a factory
-        Enemy enemy = new Enemy(getContext(), 0, 0, "Monster", R.drawable.monster, 0, 0);
+        Enemy enemy = new Enemy(getContext(), 0, 0, "Monster", R.drawable.monster, 0, 0, 1.0f);
         enemy.addDiedSound(R.raw.orc_dead);
         enemy.addHurtSound(R.raw.orc_damaged_1);
         enemy.addHurtSound(R.raw.orc_damaged_2);

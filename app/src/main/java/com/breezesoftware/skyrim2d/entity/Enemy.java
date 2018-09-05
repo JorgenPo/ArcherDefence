@@ -31,8 +31,10 @@ public class Enemy extends Actor {
     private static List<MediaPlayer> diedSounds = new ArrayList<>();
     private static List<MediaPlayer> hurtSounds = new ArrayList<>();
 
-    public Enemy(Context context, int xPos, int yPos, String name, int outfit, int speed, int maxHealth) {
+    public Enemy(Context context, int xPos, int yPos, String name, int outfit, int speed, int maxHealth, float scale) {
         super(context, xPos, yPos, name, outfit);
+
+        this.setScale(scale);
 
         this.speed = speed;
         this.maxHealth = maxHealth;

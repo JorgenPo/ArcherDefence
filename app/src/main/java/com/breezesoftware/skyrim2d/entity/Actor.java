@@ -44,7 +44,7 @@ public class Actor extends Composite<Actor> {
         this.name = name;
         this.costume = outfit;
         this.currentCostume = 0;
-        this.scale = 1;
+        this.scale = 1.0f;
 
         if (outfit != 0) {
             BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);

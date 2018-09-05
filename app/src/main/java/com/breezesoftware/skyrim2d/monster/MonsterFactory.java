@@ -40,13 +40,9 @@ public class MonsterFactory {
 
     public Enemy create() {
         Enemy enemy = new Enemy(context, 0, 0, monsterName,
-                drawables.get(0), getSpeed(), getHealth());
+                drawables.get(0), getSpeed(), getHealth(), scale);
 
         enemy.setGold(getGold());
-
-        if (scale != 1.0f) {
-            enemy.setScale(scale);
-        }
 
         for (int i = 1; i < drawables.size(); i++) {
             enemy.addCostume(drawables.get(i));
