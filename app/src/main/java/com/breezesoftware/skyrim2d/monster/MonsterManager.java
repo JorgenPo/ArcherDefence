@@ -19,6 +19,8 @@ public class MonsterManager  {
     // Load all monsters
     public void init() {
         initOrc();
+        initHighOrc();
+        initBabyOrc();
     }
 
     public MonsterFactory getFactory(String name) {
@@ -44,5 +46,29 @@ public class MonsterManager  {
         orcFactory.addDrawable(R.drawable.monster_dead);
 
         monsterFactories.put("orc", orcFactory);
+    }
+
+    private void initBabyOrc() {
+        MonsterFactory factory = new MonsterFactory(context, "babyOrc");
+        factory.setGold(0, 2);
+        factory.setHealth(1, 1);
+        factory.setSpeed(3, 5);
+        factory.addDrawable(R.drawable.monster);
+        factory.addDrawable(R.drawable.monster_dead);
+        factory.setScale(0.5f);
+
+        monsterFactories.put("babyOrc", factory);
+    }
+
+    private void initHighOrc() {
+        MonsterFactory factory = new MonsterFactory(context, "highOrc");
+        factory.setGold(0, 10);
+        factory.setHealth(5, 10);
+        factory.setSpeed(1, 2);
+        factory.addDrawable(R.drawable.monster);
+        factory.addDrawable(R.drawable.monster_dead);
+        factory.setScale(2.0f);
+
+        monsterFactories.put("highOrc", factory);
     }
 }

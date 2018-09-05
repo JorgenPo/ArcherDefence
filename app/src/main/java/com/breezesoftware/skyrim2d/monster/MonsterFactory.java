@@ -29,6 +29,7 @@ public class MonsterFactory {
     private int speedMax = 1;
     private int goldMin = 1;
     private int goldMax = 1;
+    private float scale = 1.0f;
 
     private Random rand = new Random(new Date().getTime());
 
@@ -43,16 +44,18 @@ public class MonsterFactory {
 
         enemy.setGold(getGold());
 
+        if (scale != 1.0f) {
+            enemy.setScale(scale);
+        }
+
         for (int i = 1; i < drawables.size(); i++) {
-            enemy.setCostume(drawables.get(i), i);
+            enemy.addCostume(drawables.get(i));
         }
 
         setRandomPosition(enemy);
 
         return enemy;
     }
-
-
 
     private int getGold() {
         return Math.abs(rand.nextInt()) % goldMax + goldMin;
@@ -120,5 +123,9 @@ public class MonsterFactory {
         int yOffset = 100 + Math.abs(rand.nextInt()) % (MainActivity.SCREEN_SIZE.y - 300);
 
         enemy.goTo(xOffset, yOffset);
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
     }
 }

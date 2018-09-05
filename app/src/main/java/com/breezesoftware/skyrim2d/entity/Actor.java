@@ -14,6 +14,9 @@ import com.breezesoftware.skyrim2d.Composite;
 import com.breezesoftware.skyrim2d.util.BitmapUtil;
 import com.breezesoftware.skyrim2d.util.VectorUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This file is part of Test Kotlin Application
  * <p>
@@ -22,8 +25,6 @@ import com.breezesoftware.skyrim2d.util.VectorUtil;
  * Created by popof on 21.08.2018.
  */
 public class Actor extends Composite<Actor> {
-    private static float ACTOR_SCALE = 0.8f;
-
     protected Context context;
 
     protected float x;
@@ -33,8 +34,8 @@ public class Actor extends Composite<Actor> {
 
     protected int costume;
     protected int currentCostume;
-
-    protected Bitmap[] graphic = new Bitmap[10];
+    protected float scale;
+    protected List<Bitmap> graphic = new ArrayList<Bitmap>(10);
 
     public Actor(Context context, float xPos, float yPos, String name, int outfit) {
         this.x = xPos;
@@ -43,15 +44,11 @@ public class Actor extends Composite<Actor> {
         this.name = name;
         this.costume = outfit;
         this.currentCostume = 0;
+        this.scale = 1;
 
         if (outfit != 0) {
             BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);
-            graphic[0] = BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE);
-            graphic[0] = Bitmap.createScaledBitmap(
-                    graphic[0],
-                    (int) (graphic[0].getWidth() * ACTOR_SCALE),
-                    (int) (graphic[0].getHeight() * ACTOR_SCALE),
-                    false);
+            graphic.add(BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE));
         }
     }
 
@@ -60,14 +57,37 @@ public class Actor extends Composite<Actor> {
         this.y = posY;
     }
 
-    public void setCostume(int costume, int index) {
+    public void addCostume(int costume) {
         BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);
-        graphic[index] = BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE);
-        graphic[index] = Bitmap.createScaledBitmap(
-                graphic[index],
-                (int) (graphic[index].getWidth() * ACTOR_SCALE),
-                (int) (graphic[index].getHeight() * ACTOR_SCALE),
+        Bitmap bmp = BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE);
+        bmp = Bitmap.createScaledBitmap(
+                bmp,
+                (int) (bmp.getWidth() * this.scale),
+                (int) (bmp.getHeight() * this.scale),
                 false);
+
+        graphic.add(bmp);
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+        updateBitmapsScale();
+    }
+
+    private void updateBitmapsScale() {
+        List<Bitmap> scaled = new ArrayList<>(this.graphic.size());
+
+        for (Bitmap bmp : graphic) {
+            bmp = Bitmap.createScaledBitmap(
+                    bmp,
+                    (int) (bmp.getWidth() * this.scale),
+                    (int) (bmp.getHeight() * this.scale),
+                    false);
+
+            scaled.add(bmp);
+        }
+
+        this.graphic = scaled;
     }
 
     public void setCurrentCostume(int index) {
@@ -86,22 +106,8 @@ public class Actor extends Composite<Actor> {
         return name;
     }
 
-    public int getCostume() {
-        return costume;
-    }
-
-    public void setScale(float scale) {
-        for (Bitmap bitmap : graphic) {
-            bitmap.setWidth(bitmap.getWidth() * (int) scale);
-        }
-    }
-
     public Bitmap getBitmap() {
-        return this.graphic[currentCostume];
-    }
-
-    public Bitmap getBitmapAtIndex(int index) {
-        return this.graphic[index];
+        return this.graphic.get(currentCostume);
     }
 
     public Context getContext() {
@@ -132,7 +138,7 @@ public class Actor extends Composite<Actor> {
     }
 
     public Bitmap getCurrentCostume() {
-        return this.graphic[this.currentCostume];
+        return this.graphic.get(currentCostume);
     }
 
     public PointF getPosition() {
