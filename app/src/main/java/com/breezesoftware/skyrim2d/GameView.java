@@ -138,7 +138,7 @@ public class GameView extends SurfaceView {
             levelManager.nextLevel();
 
             if (levelManager.isLastLevel()) {
-                gameOver();
+                this.isGameOver = true;
             } else {
                 this.resetGame();
             }
@@ -202,6 +202,10 @@ public class GameView extends SurfaceView {
         //Log.d("GameView", "onDraw");
 
         updateUI();
+
+        if (isGameOver) {
+            gameOver();
+        }
 
         if (canvasWidth == 0) {
             canvasWidth = canvas.getWidth();

@@ -48,7 +48,9 @@ public class LevelManager {
     }
 
     private void loadCurrentLevel() {
-        this.enemies = this.levels.get(currentLevel).getEnemies();
+        if (currentLevel < this.levels.size()) {
+            this.enemies = this.levels.get(currentLevel).getEnemies();
+        }
     }
 
     /**
