@@ -15,7 +15,7 @@ public class DamageText extends Text {
     private static final int UP_SPEED = 2;
     private static final int ALPHA_SPEED = 5;
 
-    public DamageText(Context context, float xPos, float yPos, String text) {
+    DamageText(Context context, float xPos, float yPos, String text) {
         super(context, xPos, yPos, text, null);
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
@@ -46,6 +47,8 @@ public class GameView extends SurfaceView {
 
     private int canvasWidth = 0;
     private int canvasHeight = 0;
+
+    private MediaPlayer goldDroppedSound;
 
     public void updateUI() {
         if (this.levelLabel != null) {
@@ -98,6 +101,8 @@ public class GameView extends SurfaceView {
         enemy.addDiedSound(R.raw.orc_dead);
         enemy.addHurtSound(R.raw.orc_damaged_1);
         enemy.addHurtSound(R.raw.orc_damaged_2);
+
+        goldDroppedSound = MediaPlayer.create(getContext(), R.raw.coin_drop);
     }
 
     public void startGame() {
@@ -145,6 +150,17 @@ public class GameView extends SurfaceView {
         }
     }
 
+    private void onEnemyDead(Enemy enemy) {
+        killCount++;
+        int gold = enemy.getGold();
+
+        if (gold != 0) {
+            goldDroppedSound.start();
+        }
+
+        player.addGold(enemy.getGold());
+    }
+
     private void checkEnemyHit(Enemy enemy) {
         List<Arrow> toDelete = new ArrayList<>(player.getArrows().size());
 
@@ -156,8 +172,7 @@ public class GameView extends SurfaceView {
                 toDelete.add(arrow);
 
                 if (enemy.isDead()) {
-                    killCount++;
-                    player.addGold(enemy.getGold());
+                    onEnemyDead(enemy);
                 }
             }
         }
@@ -208,11 +223,11 @@ public class GameView extends SurfaceView {
         }
 
         if (canvasWidth == 0) {
-            canvasWidth = canvas.getWidth();
+            canvasWidth = getWidth();
         }
 
         if (canvasHeight == 0) {
-            canvasHeight = canvas.getHeight();
+            canvasHeight = getHeight();
         }
 
         this.updateEnemies(canvas);

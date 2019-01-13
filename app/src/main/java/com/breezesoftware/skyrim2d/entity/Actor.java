@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,7 +11,6 @@ import android.util.Log;
 
 import com.breezesoftware.skyrim2d.Composite;
 import com.breezesoftware.skyrim2d.util.BitmapUtil;
-import com.breezesoftware.skyrim2d.util.VectorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +25,15 @@ import java.util.List;
 public class Actor extends Composite<Actor> {
     protected Context context;
 
-    protected float x;
-    protected float y;
+    float x;
+    float y;
 
     protected String name;
 
-    protected int costume;
-    protected int currentCostume;
-    protected float scale;
-    protected List<Bitmap> graphic = new ArrayList<Bitmap>(10);
+    private int costume;
+    private int currentCostume;
+    private float scale;
+    private List<Bitmap> graphic = new ArrayList<>(10);
 
     public Actor(Context context, float xPos, float yPos, String name, int outfit) {
         this.x = xPos;
@@ -47,8 +45,7 @@ public class Actor extends Composite<Actor> {
         this.scale = 1.0f;
 
         if (outfit != 0) {
-            BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);
-            graphic.add(BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE));
+            graphic.add(loadCostume(costume));
         }
     }
 
@@ -58,8 +55,7 @@ public class Actor extends Composite<Actor> {
     }
 
     public void addCostume(int costume) {
-        BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);
-        Bitmap bmp = BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE);
+        Bitmap bmp = loadCostume(costume);
         bmp = Bitmap.createScaledBitmap(
                 bmp,
                 (int) (bmp.getWidth() * this.scale),
@@ -69,9 +65,14 @@ public class Actor extends Composite<Actor> {
         graphic.add(bmp);
     }
 
-    public void setScale(float scale) {
+    void setScale(float scale) {
         this.scale = scale;
         updateBitmapsScale();
+    }
+
+    private Bitmap loadCostume(int costume) {
+        BitmapDrawable drawable = (BitmapDrawable) this.context.getResources().getDrawable(costume);
+        return BitmapUtil.getBitmapWithTransparentBG(drawable.getBitmap(), Color.WHITE);
     }
 
     private void updateBitmapsScale() {
@@ -90,7 +91,7 @@ public class Actor extends Composite<Actor> {
         this.graphic = scaled;
     }
 
-    public void setCurrentCostume(int index) {
+    void setCurrentCostume(int index) {
         currentCostume = index;
     }
 
@@ -98,7 +99,7 @@ public class Actor extends Composite<Actor> {
         return x;
     }
 
-    public float getY() {
+    float getY() {
         return y;
     }
 
@@ -106,7 +107,7 @@ public class Actor extends Composite<Actor> {
         return name;
     }
 
-    public Bitmap getBitmap() {
+    Bitmap getBitmap() {
         return this.graphic.get(currentCostume);
     }
 
@@ -141,11 +142,11 @@ public class Actor extends Composite<Actor> {
         return this.graphic.get(currentCostume);
     }
 
-    public PointF getPosition() {
+    PointF getPosition() {
         return new PointF(this.x, this.y);
     }
 
-    public RectF getBoundingRect() {
+    private RectF getBoundingRect() {
         Bitmap bitmap = this.getBitmap();
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();

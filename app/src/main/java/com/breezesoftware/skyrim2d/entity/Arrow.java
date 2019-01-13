@@ -72,7 +72,7 @@ public class Arrow extends Actor {
         return damage;
     }
 
-    public void setDamage(int damage) {
+    void setDamage(int damage) {
         this.damage = damage;
     }
 

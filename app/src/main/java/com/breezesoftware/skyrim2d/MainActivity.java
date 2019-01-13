@@ -3,6 +3,7 @@ package com.breezesoftware.skyrim2d;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int FRAME_RATE = 50;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     private GameView gameView;
     private Button playAgainButton;
+
+    private MediaPlayer backgroundMusic;
 
     class GameThread extends Thread {
         private boolean isRunning = false;
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void runGame() {
+        backgroundMusic.start();
         gameThread.setRunning(true);
         gameThread.start();
     }
@@ -69,15 +75,8 @@ public class MainActivity extends AppCompatActivity {
     private void pauseGame() {
         boolean retry = true;
         gameThread.setRunning(false);
-
-        while (retry) {
-            try {
-                gameThread.join();
-                retry = false;
-            } catch (InterruptedException e) {
-                // retry
-            }
-        }
+        backgroundMusic.pause();
+        backgroundMusic.seekTo(0);
     }
 
     @Override
@@ -142,6 +141,13 @@ public class MainActivity extends AppCompatActivity {
                 pauseGame();
             }
         });
+
+        loadBackgroundMusic();
+    }
+
+    private void loadBackgroundMusic() {
+        backgroundMusic = MediaPlayer.create(this, R.raw.bgm_hard);
+        backgroundMusic.setLooping(true);
     }
 
 }

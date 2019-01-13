@@ -132,7 +132,7 @@ public class Player extends Actor {
     }
 
     /**
-     * Returns player damage dispersion. Dispersion based on player strength and dexterity
+     * Returns player damage dispersion. Dispersion based on player dexterity
      *
      * @return Damage dispersion
      */

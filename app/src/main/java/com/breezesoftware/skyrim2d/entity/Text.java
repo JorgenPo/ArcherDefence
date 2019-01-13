@@ -17,9 +17,9 @@ import java.lang.reflect.Type;
  */
 public class Text extends Actor {
 
-    protected Paint paint;
+    Paint paint;
 
-    public Text(Context context, float xPos, float yPos, String text, Paint paint) {
+    Text(Context context, float xPos, float yPos, String text, Paint paint) {
         super(context, xPos, yPos, text, 0);
 
         if (paint == null) {
@@ -29,7 +29,7 @@ public class Text extends Actor {
         }
     }
 
-    public static Paint getDefaultPaint() {
+    static Paint getDefaultPaint() {
         Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(30.0f);
